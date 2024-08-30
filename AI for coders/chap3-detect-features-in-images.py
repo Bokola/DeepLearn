@@ -6,8 +6,11 @@
 # keras uses max pooling to reduce the image
 
 import tensorflow as tf
+<<<<<<< HEAD
 import numpy as np
 
+=======
+>>>>>>> 718f597f3a83a4e00100055d65f6fef218453ffd
 data = tf.keras.datasets.fashion_mnist
 ((train_images, train_labels),
  (test_images, test_labels)) = data.load_data()
@@ -44,6 +47,7 @@ print(cl[0])
 print(test_labels[0])
 # explore the model
 model.summary()
+<<<<<<< HEAD
 
 # using Keras ImageDataGenerator to work with unlabelled data
 
@@ -248,3 +252,4 @@ pretrained_model.load_weights(weights_file)
 # summary of pretrained model
 pretrained_model.summary()
 # set layers untrainable and point it to mixed7 as its output
+
