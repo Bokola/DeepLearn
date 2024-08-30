@@ -6,11 +6,8 @@
 # keras uses max pooling to reduce the image
 
 import tensorflow as tf
-<<<<<<< HEAD
 import numpy as np
 
-=======
->>>>>>> 718f597f3a83a4e00100055d65f6fef218453ffd
 data = tf.keras.datasets.fashion_mnist
 ((train_images, train_labels),
  (test_images, test_labels)) = data.load_data()
