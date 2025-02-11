@@ -7,6 +7,20 @@
 
 import tensorflow as tf
 import numpy as np
+import urllib.request
+import zipfile
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.optimizers import RMSprop
+from PIL import Image
+import glob
+import os
+import pathlib
+from keras.preprocessing import image
+from PIL import Image
+import scipy
+from tensorflow.keras.applications.inception_v3 import InceptionV3
+from tensorflow.keras import layers
+from tensorflow.keras import Model
 
 data = tf.keras.datasets.fashion_mnist
 ((train_images, train_labels),
@@ -44,50 +58,59 @@ print(cl[0])
 print(test_labels[0])
 # explore the model
 model.summary()
-<<<<<<< HEAD
+
 
 # using Keras ImageDataGenerator to work with unlabelled data
 
-import urllib.request
-import zipfile
+def gen_train_and_validation_sets():
+    """
+    generate training set and a validation set images of human/horse for CNN
+    :return: train_generator, validation_generator
+    """
+    url = "https://storage.googleapis.com/learning-datasets/horse-or-human.zip"
+    file_name = "horse-or-human.zip"
+    training_dir = "horse-or-human/training/"
+    urllib.request.urlretrieve(url, file_name)
 
-url = "https://storage.googleapis.com/learning-datasets/horse-or-human.zip"
-file_name = "horse-or-human.zip"
-training_dir = "horse-or-human/training/"
-urllib.request.urlretrieve(url, file_name)
+    zip_ref = zipfile.ZipFile(file_name, 'r')
+    zip_ref.extractall(training_dir)
+    zip_ref.close()
 
-zip_ref = zipfile.ZipFile(file_name, 'r')
-zip_ref.extractall(training_dir)
-zip_ref.close()
+    # validation set
 
-# validation set
+    validation_url = "https://storage.googleapis.com/learning-datasets/validation-horse-or-human.zip"
+    validation_file_name = "validation-horse-or-human.zip"
+    validation_dir = 'horse-or-human/validation/'
 
-validation_url = "https://storage.googleapis.com/learning-datasets/validation-horse-or-human.zip"
-validation_file_name = "validation-horse-or-human.zip"
-validation_dir = 'horse-or-human/validation/'
+    urllib.request.urlretrieve(validation_url, validation_file_name)
+    zip_ref = zipfile.ZipFile(validation_file_name, 'r')
+    zip_ref.extractall(validation_dir)
+    zip_ref.close()
 
-urllib.request.urlretrieve(validation_url, validation_file_name)
-zip_ref = zipfile.ZipFile(validation_file_name, 'r')
-zip_ref.extractall(validation_dir)
-zip_ref.close()
+    # scale images by 1/255
+    train_datagen = ImageDataGenerator(rescale=1. / 255)
 
-from tensorflow.keras.preprocessing.image import ImageDataGenerator
-from tensorflow.keras.optimizers import RMSprop
+    train_generator = train_datagen.flow_from_directory(
+        training_dir,
+        target_size=(300, 300),
+        class_mode='binary'
+    )
 
-# scale images by 1/255
-train_datagen = ImageDataGenerator(rescale=1./255)
+    validation_generator = train_datagen.flow_from_directory(
+        validation_dir,
+        target_size=(300, 300),
+        class_mode='binary'
+    )
+    return train_generator, validation_generator
 
-train_generator = train_datagen.flow_from_directory(
-    training_dir,
-    target_size=(300, 300),
-    class_mode = 'binary'
-)
 
-validation_generator = train_datagen.flow_from_directory(
-    validation_dir,
-    target_size=(300, 300),
-    class_mode = 'binary'
-)
+def get_dirs(train, validate):
+    training_dir = train
+    validation_dir = validate
+    return training_dir, validation_dir
+
+training_dir, validation_dir = get_dirs(train ="horse-or-human/training/", validate='horse-or-human/validation/')
+
 
 # images are colored needing 3 channels instead of one
 # images may be larger than 300 X 300 pixels needing more layers
@@ -115,39 +138,38 @@ model.compile(loss = 'binary_crossentropy',
               optimizer = RMSprop(learning_rate = 1e-3),
               metrics = ['accuracy'])
 # train
+train_generator, validation_generator = gen_train_and_validation_sets()
+
 history = model.fit(train_generator, epochs = 15,
                     validation_data = validation_generator)
 
 # test the model
-from PIL import Image
-import glob
-import os
-import pathlib
-from keras.preprocessing import image
-from PIL import Image
-import scipy
 
-data_dir = os.path.join(os.getcwd(), 'data')
-images = []
-for f in glob.glob(os.path.join(data_dir, '*.jpg')):
-    imm = Image.open(f)
-    # comply to 300 X 300 size of the trained model
-    img = image.load_img(f, target_size=(300, 300))
-    # img.show()
-    im = image.img_to_array(img)
-    # make 3D
-    im = np.expand_dims(im, axis=0)
-    # stack vertically to match training data
-    im_tensor = np.vstack([im])
-    images.append(imm)
-    # model overfits towards horses if human isn't fully posed
-    classes = model.predict(im_tensor)
-    print(classes)
-    print(classes[0])
-    if classes[0] > 0.5:
-        print(f + ' is a human')
-    else:
-        print(f + ' is a horse')
+def test_model(modl, size=300):
+    data_dir = os.path.join(os.getcwd(), 'data')
+    images = []
+    for f in glob.glob(os.path.join(data_dir, '*.jpg')):
+        imm = Image.open(f)
+        # comply to 300 X 300 size of the trained model
+        img = image.load_img(f, target_size=(size, size))
+        # img.show()
+        im = image.img_to_array(img)
+        # make 3D
+        im = np.expand_dims(im, axis=0)
+        # stack vertically to match training data
+        im_tensor = np.vstack([im])
+        images.append(imm)
+        # model overfits towards horses if human isn't fully posed
+        classes = modl.predict(im_tensor, batch_size=10)
+        print(classes)
+        print(classes[0])
+        if classes[0] > 0.5:
+            print(f + ' is a human')
+        else:
+            print(f + ' is a horse')
+
+test_model(modl=model)
+
 # image augmentation: extend your training set beyond what is locally available to your date
 # e.g transformations like color scheme, brightness levels, rotations, flipping, etc
 # training takes longer coz of all the image preprocessing but improves predictions
@@ -184,7 +206,7 @@ validation_generator = train_datagen.flow_from_directory(
 # images are colored needing 3 channels instead of one
 # images may be larger than 300 X 300 pixels needing more layers
 
-model = tf.keras.models.Sequential([
+model_aug = tf.keras.models.Sequential([
     tf.keras.layers.Conv2D(16, (3,3), activation = 'relu',
                            input_shape = (300, 300, 3)),
     tf.keras.layers.MaxPooling2D(pool_size = (2,2)),
@@ -201,43 +223,23 @@ model = tf.keras.models.Sequential([
     # one neuron as it's a binary classifier
     tf.keras.layers.Dense(1, activation = 'sigmoid')
 ])
-model.summary()
+model_aug.summary()
 # train using binary cross entropy loss function
-model.compile(loss = 'binary_crossentropy',
-              optimizer = RMSprop(learning_rate = 1e-3),
+model_aug.compile(loss = 'binary_crossentropy',
+              optimizer = RMSprop(learning_rate = 1e-4),
               metrics = ['accuracy'])
 # train
-history = model.fit(train_generator, epochs = 15,
+history = model_aug.fit(train_generator, epochs = 15,
                     validation_data = validation_generator)
 
 # test the model after augmentation
-
-data_dir = os.path.join(os.getcwd(), 'data')
-images = []
-for f in glob.glob(os.path.join(data_dir, '*.jpg')):
-    imm = Image.open(f)
-    # comply to 300 X 300 size of the trained model
-    img = image.load_img(f, target_size=(300, 300))
-    # img.show()
-    im = image.img_to_array(img)
-    # make 3D
-    im = np.expand_dims(im, axis=0)
-    # stack vertically to match training data
-    im_tensor = np.vstack([im])
-    images.append(imm)
-    # model overfits towards horses if human isn't fully posed
-    classes = model.predict(im_tensor)
-    print(classes)
-    print(classes[0])
-    if classes[0] > 0.5:
-        print(f + ' is a human')
-    else:
-        print(f + ' is a horse')
+# overfits to human
+test_model(model=model_aug)
 
 # transfer learning: using prelearned layers from a larger model in our training
 # use Google's inception model
 
-from tensorflow.keras.applications.inception_v3 import InceptionV3
+
 weights_url = 'https://storage.googleapis.com/mledu-datasets/inception_v3_weights_tf_dim_ordering_tf_kernels_notop.h5'
 weights_file = "inception_v3.h5"
 urllib.request.urlretrieve(weights_url, weights_file)
@@ -249,4 +251,95 @@ pretrained_model.load_weights(weights_file)
 # summary of pretrained model
 pretrained_model.summary()
 # set layers untrainable and point it to mixed7 as its output
+for layer in pretrained_model.layers:
+    layer.trainable = False
 
+    last_layer = pretrained_model.get_layer('mixed7')
+    print('last layer output shape: ', last_layer)
+    last_output = last_layer.output
+
+# add dense layer underneath
+x = layers.Flatten()(last_output)
+# add a fully connected layer with 1,024 units & ReLU activation
+x = layers.Dense(1024, activation = 'relu')(x)
+# add a final sigmoid layer for classification
+x = layers.Dense(1, activation = 'sigmoid')(x)
+# define model using pretrained model and x
+model_tl = Model(pretrained_model.input,x)
+model_tl.compile(
+    optimizer = RMSprop(learning_rate = 1e-4),
+    loss = 'binary_crossentropy',
+    metrics = ['accuracy']
+)
+
+train_datagen = ImageDataGenerator(
+    rescale=1./255,
+    rotation_range=40,
+    width_shift_range=0.2,
+    height_shift_range=0.2,
+    shear_range=0.2,
+    zoom_range=0.2,
+    horizontal_flip=True
+)
+test_datagen = ImageDataGenerator(rescale=1./255)
+# note that the validation data should not be augmented
+# flow training images in batches of 20 using train_datagen generator
+train_generator = train_datagen.flow_from_directory(
+    training_dir,
+    batch_size=20,
+    class_mode = 'binary',
+    target_size = (150, 150)
+)
+validation_generator = test_datagen.flow_from_directory(
+    validation_dir,
+    batch_size=20,
+    class_mode = 'binary',
+    target_size = (150, 150)
+)
+history = model_tl.fit(
+    train_generator,
+    validation_data = validation_generator,
+    epochs = 20,
+    verbose = 1
+)
+test_model(model_tl, size=150)
+test_model(model_aug)
+
+# Dropout Regulariztion
+# randomly drop and ignore some neurons during training to avoid overfitting
+
+model_dr = tf.keras.models.Sequential([
+    tf.keras.layers.Conv2D(16, (3,3), activation = 'relu',
+                           input_shape = (300, 300, 3)),
+    tf.keras.layers.MaxPooling2D(pool_size = (2,2)),
+    tf.keras.layers.Conv2D(32, (3,3), activation = 'relu'),
+    tf.keras.layers.Dropout(0.2),
+    tf.keras.layers.MaxPooling2D(pool_size = (2,2)),
+    tf.keras.layers.Conv2D(64, (3,3), activation = 'relu'),
+    tf.keras.layers.Dropout(0.2),
+    tf.keras.layers.MaxPooling2D(pool_size = (2,2)),
+    tf.keras.layers.Conv2D(64, (3, 3), activation='relu'),
+    tf.keras.layers.Dropout(0.2),
+    tf.keras.layers.MaxPooling2D(pool_size=(2, 2)),
+    tf.keras.layers.Conv2D(64, (3, 3), activation='relu'),
+    tf.keras.layers.Dropout(0.2),
+    tf.keras.layers.MaxPooling2D(pool_size=(2, 2)),
+    tf.keras.layers.Flatten(),
+    tf.keras.layers.Dense(528, activation = 'relu'),
+    tf.keras.layers.Dropout(0.2),
+    # one neuron as it's a binary classifier
+    tf.keras.layers.Dense(1, activation = 'sigmoid')
+])
+model_dr.summary()
+# train using binary cross entropy loss function
+model_dr.compile(loss = 'binary_crossentropy',
+              optimizer = RMSprop(learning_rate = 1e-4),
+              metrics = ['accuracy'])
+# train
+train_generator, validation_generator = gen_train_and_validation_sets()
+history = model_dr.fit(train_generator, epochs = 15,
+                    validation_data = validation_generator)
+
+# test the model after augmentation
+# overfits to human
+test_model(modl=model_dr)
