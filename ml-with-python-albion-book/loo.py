@@ -60,8 +60,8 @@ for epoch in range(epochs):
 
 # Evaluate neural network
 with torch.no_grad():
-output = network(x_test)
-test_loss = criterion(output, y_test)
-test_accuracy = (output.round() == y_test).float().mean()
-print("Test Loss:", test_loss.item(), "\tTest Accuracy:",
-test_accuracy.item())
+    output = network(x_test)
+    test_loss = criterion(output, y_test)
+    test_accuracy = (output.round() == y_test).float().mean()
+    print("Test Loss:", test_loss.item(), "\tTest Accuracy:",
+          test_accuracy.item())
