@@ -1,0 +1,38 @@
+artifact_path: mlflow-artifacts:/793804809650803818/models/m-e09ac21df00248dd8dbde75a1ea85ea4/artifacts
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.pkl
+    predict_fn: predict
+    python_version: 3.12.3
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 1.7.1
+is_signature_from_type_hint: false
+mlflow_version: 3.1.4
+model_id: m-e09ac21df00248dd8dbde75a1ea85ea4
+model_size_bytes: 683371
+model_uuid: m-e09ac21df00248dd8dbde75a1ea85ea4
+prompts: null
+run_id: eb7441a669834ad780545030c9703fe1
+saved_input_example_info:
+  artifact_path: input_example.json
+  pandas_orient: split
+  serving_input_path: serving_input_example.json
+  type: dataframe
+signature:
+  inputs: '[{"type": "double", "name": "average_temperature", "required": true}, {"type":
+    "double", "name": "rainfall", "required": true}, {"type": "long", "name": "weekend",
+    "required": true}, {"type": "long", "name": "holiday", "required": true}, {"type":
+    "double", "name": "price_per_kg", "required": true}, {"type": "long", "name":
+    "promo", "required": true}, {"type": "double", "name": "previous_days_demand",
+    "required": true}]'
+  outputs: '[{"type": "double", "required": true}]'
+  params: null
+type_hint_from_example: false
+utc_time_created: '2025-07-25 13:23:52.584461'

@@ -1,0 +1,14 @@
+artifact_uri: mlflow-artifacts:/793804809650803818/eb7441a669834ad780545030c9703fe1/artifacts
+end_time: 1753449834666
+entry_point_name: ''
+experiment_id: '793804809650803818'
+lifecycle_stage: active
+run_id: eb7441a669834ad780545030c9703fe1
+run_name: apples_rf_test
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1753449832511
+status: 3
+tags: []
+user_id: basil-owiti

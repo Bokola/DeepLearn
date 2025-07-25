@@ -1,0 +1,12 @@
+artifact_location: mlflow-artifacts:/462559031047992424
+creation_time: 1753446002094
+experiment_id: '462559031047992424'
+last_update_time: 1753446328520
+lifecycle_stage: deleted
+name: Apple_Models
+tags:
+  mlflow.note.content: This is the grocery forecasting project.This experiment contains
+    the produce models for apples.
+  project-name: gorcery-forecasting
+  store_dep: produce
+  team: stores-ml
