@@ -1,3 +1,4 @@
 *.zip
 *.h5
 horse-or-human.zip
+*.env
