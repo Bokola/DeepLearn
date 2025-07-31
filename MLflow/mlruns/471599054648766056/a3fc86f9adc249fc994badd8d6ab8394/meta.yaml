@@ -1,0 +1,14 @@
+artifact_uri: file:///home/basil-owiti/DeepLearn/MLflow/mlruns/471599054648766056/a3fc86f9adc249fc994badd8d6ab8394/artifacts
+end_time: 1753963307416
+entry_point_name: ''
+experiment_id: '471599054648766056'
+lifecycle_stage: active
+run_id: a3fc86f9adc249fc994badd8d6ab8394
+run_name: traveling-asp-520
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1753963292097
+status: 3
+tags: []
+user_id: basil-owiti

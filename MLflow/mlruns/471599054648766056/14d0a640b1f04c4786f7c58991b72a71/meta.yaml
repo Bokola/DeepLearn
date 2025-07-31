@@ -1,0 +1,14 @@
+artifact_uri: file:///home/basil-owiti/DeepLearn/MLflow/mlruns/471599054648766056/14d0a640b1f04c4786f7c58991b72a71/artifacts
+end_time: 1753963427690
+entry_point_name: ''
+experiment_id: '471599054648766056'
+lifecycle_stage: active
+run_id: 14d0a640b1f04c4786f7c58991b72a71
+run_name: likeable-rat-474
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1753963415445
+status: 3
+tags: []
+user_id: basil-owiti

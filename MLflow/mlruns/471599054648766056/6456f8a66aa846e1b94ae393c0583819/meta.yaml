@@ -1,0 +1,14 @@
+artifact_uri: file:///home/basil-owiti/DeepLearn/MLflow/mlruns/471599054648766056/6456f8a66aa846e1b94ae393c0583819/artifacts
+end_time: 1753963292089
+entry_point_name: ''
+experiment_id: '471599054648766056'
+lifecycle_stage: active
+run_id: 6456f8a66aa846e1b94ae393c0583819
+run_name: rare-grub-694
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1753963275715
+status: 3
+tags: []
+user_id: basil-owiti

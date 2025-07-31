@@ -1,0 +1,14 @@
+artifact_uri: file:///home/basil-owiti/DeepLearn/MLflow/mlruns/471599054648766056/4048105cad48489abf5a7a637503b1af/artifacts
+end_time: 1753963260195
+entry_point_name: ''
+experiment_id: '471599054648766056'
+lifecycle_stage: active
+run_id: 4048105cad48489abf5a7a637503b1af
+run_name: indecisive-kit-235
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1753963241868
+status: 3
+tags: []
+user_id: basil-owiti

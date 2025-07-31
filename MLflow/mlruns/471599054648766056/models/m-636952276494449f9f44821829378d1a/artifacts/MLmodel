@@ -1,0 +1,28 @@
+artifact_path: file:///home/basil-owiti/DeepLearn/MLflow/mlruns/471599054648766056/models/m-636952276494449f9f44821829378d1a/artifacts
+flavors:
+  python_function:
+    data: data
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.tensorflow
+    python_version: 3.12.3
+  tensorflow:
+    code: null
+    data: data
+    keras_version: 2.19.0
+    model_type: keras
+    save_format: tf
+is_signature_from_type_hint: false
+mlflow_version: 3.1.4
+model_id: m-636952276494449f9f44821829378d1a
+model_size_bytes: 51327
+model_uuid: m-636952276494449f9f44821829378d1a
+prompts: null
+run_id: f597f9e3151e48608e9d2cf1ac0b9e83
+signature:
+  inputs: '[{"type": "tensor", "tensor-spec": {"dtype": "float64", "shape": [-1, 11]}}]'
+  outputs: '[{"type": "tensor", "tensor-spec": {"dtype": "int64", "shape": [-1]}}]'
+  params: null
+type_hint_from_example: false
+utc_time_created: '2025-07-31 12:02:56.770513'

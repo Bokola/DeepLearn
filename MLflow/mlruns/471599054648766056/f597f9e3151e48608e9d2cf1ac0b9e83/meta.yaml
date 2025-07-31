@@ -1,0 +1,14 @@
+artifact_uri: file:///home/basil-owiti/DeepLearn/MLflow/mlruns/471599054648766056/f597f9e3151e48608e9d2cf1ac0b9e83/artifacts
+end_time: 1753963387642
+entry_point_name: ''
+experiment_id: '471599054648766056'
+lifecycle_stage: active
+run_id: f597f9e3151e48608e9d2cf1ac0b9e83
+run_name: beautiful-perch-619
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1753963371182
+status: 3
+tags: []
+user_id: basil-owiti

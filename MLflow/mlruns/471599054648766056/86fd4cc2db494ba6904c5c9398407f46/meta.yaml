@@ -1,0 +1,14 @@
+artifact_uri: file:///home/basil-owiti/DeepLearn/MLflow/mlruns/471599054648766056/86fd4cc2db494ba6904c5c9398407f46/artifacts
+end_time: 1753963275705
+entry_point_name: ''
+experiment_id: '471599054648766056'
+lifecycle_stage: active
+run_id: 86fd4cc2db494ba6904c5c9398407f46
+run_name: secretive-ray-295
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1753963260205
+status: 3
+tags: []
+user_id: basil-owiti

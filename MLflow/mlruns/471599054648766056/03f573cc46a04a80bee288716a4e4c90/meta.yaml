@@ -1,0 +1,14 @@
+artifact_uri: file:///home/basil-owiti/DeepLearn/MLflow/mlruns/471599054648766056/03f573cc46a04a80bee288716a4e4c90/artifacts
+end_time: 1753963356684
+entry_point_name: ''
+experiment_id: '471599054648766056'
+lifecycle_stage: active
+run_id: 03f573cc46a04a80bee288716a4e4c90
+run_name: casual-stag-350
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1753963339896
+status: 3
+tags: []
+user_id: basil-owiti

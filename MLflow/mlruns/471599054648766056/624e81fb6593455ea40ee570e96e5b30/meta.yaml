@@ -1,0 +1,14 @@
+artifact_uri: file:///home/basil-owiti/DeepLearn/MLflow/mlruns/471599054648766056/624e81fb6593455ea40ee570e96e5b30/artifacts
+end_time: 1753963415437
+entry_point_name: ''
+experiment_id: '471599054648766056'
+lifecycle_stage: active
+run_id: 624e81fb6593455ea40ee570e96e5b30
+run_name: gentle-stoat-366
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1753963402302
+status: 3
+tags: []
+user_id: basil-owiti

@@ -1,0 +1,14 @@
+artifact_uri: file:///home/basil-owiti/DeepLearn/MLflow/mlruns/471599054648766056/36c2411427314e2cbcbecb54d800f6b4/artifacts
+end_time: 1753963472723
+entry_point_name: ''
+experiment_id: '471599054648766056'
+lifecycle_stage: active
+run_id: 36c2411427314e2cbcbecb54d800f6b4
+run_name: enchanting-colt-686
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1753963456645
+status: 3
+tags: []
+user_id: basil-owiti

@@ -1,0 +1,6 @@
+artifact_location: file:///home/basil-owiti/DeepLearn/MLflow/mlruns/471599054648766056
+creation_time: 1753963215959
+experiment_id: '471599054648766056'
+last_update_time: 1753963215959
+lifecycle_stage: active
+name: wine-quality-optimization

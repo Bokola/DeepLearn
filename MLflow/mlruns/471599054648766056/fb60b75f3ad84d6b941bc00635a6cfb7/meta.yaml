@@ -1,0 +1,14 @@
+artifact_uri: file:///home/basil-owiti/DeepLearn/MLflow/mlruns/471599054648766056/fb60b75f3ad84d6b941bc00635a6cfb7/artifacts
+end_time: 1753963402295
+entry_point_name: ''
+experiment_id: '471599054648766056'
+lifecycle_stage: active
+run_id: fb60b75f3ad84d6b941bc00635a6cfb7
+run_name: brawny-fowl-892
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1753963387652
+status: 3
+tags: []
+user_id: basil-owiti

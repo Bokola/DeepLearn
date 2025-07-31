@@ -1,0 +1,14 @@
+artifact_uri: file:///home/basil-owiti/DeepLearn/MLflow/mlruns/471599054648766056/dd30db01cb414ac79e21626f0002c646/artifacts
+end_time: 1753963456626
+entry_point_name: ''
+experiment_id: '471599054648766056'
+lifecycle_stage: active
+run_id: dd30db01cb414ac79e21626f0002c646
+run_name: righteous-eel-372
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1753963443110
+status: 3
+tags: []
+user_id: basil-owiti

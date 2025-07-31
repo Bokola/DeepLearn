@@ -1,0 +1,14 @@
+artifact_uri: file:///home/basil-owiti/DeepLearn/MLflow/mlruns/471599054648766056/33613dcffdea4bffb8762b54c35c4f65/artifacts
+end_time: 1753963371171
+entry_point_name: ''
+experiment_id: '471599054648766056'
+lifecycle_stage: active
+run_id: 33613dcffdea4bffb8762b54c35c4f65
+run_name: agreeable-dove-401
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1753963356693
+status: 3
+tags: []
+user_id: basil-owiti

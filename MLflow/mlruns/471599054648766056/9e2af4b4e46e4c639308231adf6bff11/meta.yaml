@@ -1,0 +1,14 @@
+artifact_uri: file:///home/basil-owiti/DeepLearn/MLflow/mlruns/471599054648766056/9e2af4b4e46e4c639308231adf6bff11/artifacts
+end_time: 1753963443103
+entry_point_name: ''
+experiment_id: '471599054648766056'
+lifecycle_stage: active
+run_id: 9e2af4b4e46e4c639308231adf6bff11
+run_name: popular-sloth-721
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1753963427702
+status: 3
+tags: []
+user_id: basil-owiti

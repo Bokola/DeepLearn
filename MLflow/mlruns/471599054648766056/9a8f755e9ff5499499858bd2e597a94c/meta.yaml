@@ -1,0 +1,14 @@
+artifact_uri: file:///home/basil-owiti/DeepLearn/MLflow/mlruns/471599054648766056/9a8f755e9ff5499499858bd2e597a94c/artifacts
+end_time: 1753963472737
+entry_point_name: ''
+experiment_id: '471599054648766056'
+lifecycle_stage: active
+run_id: 9a8f755e9ff5499499858bd2e597a94c
+run_name: hyperparameter-sweep
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1753963241849
+status: 3
+tags: []
+user_id: basil-owiti

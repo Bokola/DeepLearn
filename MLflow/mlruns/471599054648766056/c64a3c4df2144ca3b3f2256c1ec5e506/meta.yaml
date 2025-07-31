@@ -1,0 +1,14 @@
+artifact_uri: file:///home/basil-owiti/DeepLearn/MLflow/mlruns/471599054648766056/c64a3c4df2144ca3b3f2256c1ec5e506/artifacts
+end_time: 1753963339889
+entry_point_name: ''
+experiment_id: '471599054648766056'
+lifecycle_stage: active
+run_id: c64a3c4df2144ca3b3f2256c1ec5e506
+run_name: intelligent-owl-496
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1753963323782
+status: 3
+tags: []
+user_id: basil-owiti

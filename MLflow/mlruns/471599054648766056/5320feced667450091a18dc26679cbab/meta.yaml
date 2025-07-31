@@ -1,0 +1,14 @@
+artifact_uri: file:///home/basil-owiti/DeepLearn/MLflow/mlruns/471599054648766056/5320feced667450091a18dc26679cbab/artifacts
+end_time: 1753963323775
+entry_point_name: ''
+experiment_id: '471599054648766056'
+lifecycle_stage: active
+run_id: 5320feced667450091a18dc26679cbab
+run_name: upset-boar-764
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1753963307424
+status: 3
+tags: []
+user_id: basil-owiti

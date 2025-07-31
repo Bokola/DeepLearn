@@ -1,0 +1,10 @@
+artifact_location: file:///home/basil-owiti/DeepLearn/MLflow/mlruns/471599054648766056/models/m-515ddfbb0d56479bbc9cf48dcd4f4e0a/artifacts
+creation_timestamp: 1753963393868
+experiment_id: '471599054648766056'
+last_updated_timestamp: 1753963401833
+model_id: m-515ddfbb0d56479bbc9cf48dcd4f4e0a
+model_type: null
+name: model
+source_run_id: fb60b75f3ad84d6b941bc00635a6cfb7
+status: 2
+status_message: null
