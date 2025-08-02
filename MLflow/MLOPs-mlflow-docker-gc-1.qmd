@@ -1,22 +1,22 @@
-"""
-Master the complete MLOPs workflow with MLflow's parameter optimization capabilities.
-Uses whine quality prediction dataset
-see: https://mlflow.org/docs/latest/ml/getting-started/hyperparameter-tuning/
-"""
-from mlflow.environment_variables import MLFLOW_TRACKING_URI
-from mlflow.optuna.storage import mlflow_optuna_status_map
+---
+title: End-to-end Machine Learning (MLflow + Docker + Google cloud)
+jupyter: python3
+---
 
-# start MLflow tracking server: mlflow ui --port 5000
 
-# install dependencies
-# pip install mlflow[extras] hyperopt tensorflow scikit-learn pandas numpy
 
-# set environment variables on terminal
-# export MLFLOW_TRACKING_URI=http://localhost:5000
+This is an account of my learning journey aided by [this](https://mlflow.org/docs/latest/ml/getting-started/hyperparameter-tuning/) tutorial to grasp the nitty-gritties of buliding, logging, saving and serving machine learning models. First is a description of the development environment used.
 
-"""
-Step 1: Prepare data
-"""
+## Development Environment
+
+I am running Debian 24.04 LTS, and Pycharm IDE calling Python 3.12 within a .venv virtual environment. Since the model used is a Tensorflow neural network, I had to follow [cuda](https://developer.nvidia.com/cuda-downloads?target_os=Linux&target_arch=x86_64&Distribution=Ubuntu&target_version=24.04&target_type=deb_local) documentation in setting up necessary drives. You also need to start mlflow ui local server by running `mlflow ui --port 5000` in the terminal, install dependenices `pip install mlflow[extras] hyperopt tensorflow scikit-learn pandas numpy`, and set environment variable `export MLFLOW_TRACKING_URI=http://localhost:5000`.
+
+## Step 1 : Data Preparation
+
+The tutorial uses [wine quality](https://raw.githubusercontent.com/mlflow/mlflow/master/tests/datasets/winequality-white.csv) classification data.
+
+```
+# prepare data
 
 import os
 from dotenv import load_dotenv
@@ -58,10 +58,11 @@ train_x, valid_x, train_y, valid_y = train_test_split(train_x, train_y, test_siz
 # Create model signature for deployment
 signature = infer_signature(train_x, train_y)
 
-"""
-Step 2: Define model architecture
-"""
+```
 
+## Define Model architecture
+
+```
 def create_and_train_model(learning_rate, momentum, epochs=10):
     """
     Create and train a neural network with specified hyperparameters.
@@ -118,11 +119,11 @@ def create_and_train_model(learning_rate, momentum, epochs=10):
         "history": history,
         "epochs_trained": len(history.history["loss"]),
     }
+    ```
 
-"""
-Step 3: Set up Hyperparameter optimization
-"""
+## Step 3: Set up parameter optimization
 
+```
 def objective(params):
     """
     Objective function for hyperparameter optimization.
@@ -202,10 +203,11 @@ search_space = {
 print("Search space defined:")
 print("- Learning rate: 1e-5 to 1e-1 (log-uniform)")
 print("- Momentum: 0.0 to 0.9 (uniform)")
+```
 
-"""
-Step 4: Run the Hyperparameter optimization
-"""
+## Step 4: Run the hyperparameter optimization
+
+```
 
 # Create or set experiment
 experiment_name = "wine-quality-optimization"
@@ -255,37 +257,100 @@ with mlflow.start_run(run_name="hyperparameter-sweep"):
             "optimization_completed": 1,
         }
     )
+    ```
 
-"""
-Step 7: Deploy your model locally
-"""
-# use a different port by running the following on terminal
-# use the model name you specified when saving best model
-# I've added no-conda coz I am using Pycharm with .venv project management
+## Step 5: Analyze Results in the MLflow UI
 
-# mlflow models serve -m "models:/wine-quality-predictor/1" --port 5002 --no-conda
+a. Navigate to your experiment &rarr; click on "wine-quality-optimization
 
-# for production you'd use port 80 or 403
+b. Add key columns: click "columns and add:
 
-# test your deployment in curl through terminal
+    - `Metrics | val_rmse`
 
+    - `Parameters | learning_rate`
+    
+    - `Parameters | momentum`
+c. Interprete the visualization: blue lines - better performing runs; red lines - worse performing runs
+
+d. Also take a look at the training curves:
+
+```{python}
+import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
+# Specify the path to your image file
+image_path = "val_rmse.png"
+
+# Read the image
+img = mpimg.imread(image_path)
+
+# Display the image
+plt.imshow(img)
+plt.axis('off')  # Hide the axes
+plt.show()
+```
+
+```{python}
+
+# Specify the path to your image file
+image_path = "training_curves.png"
+
+# Read the image
+img = mpimg.imread(image_path)
+
+# Display the image
+plt.imshow(img)
+plt.axis('off')  # Hide the axes
+plt.show()
+```
+
+## Step 6: Register your best model
+
+To find the best run: in the table view, click on the run with the lowest `val_rmse` then navigate to **model artifacts** and scroll to the "Artifacts" section. then register the model:
+
+    - Go to "Models" tab in MLflow UI
+
+    - Click on your registered model
+
+    - Transition to "Staging" stage for testing
+    
+    - Add tags and descriptions as needed
+
+## Step 7: Deploy the best model
+
+Test your model with a REST API
+
+```
+# Serve the model (choose the version number you registered)
+mlflow models serve -m "models:/wine-quality-predictor/1" --port 5002
+```
+
+Test your deployment
+
+```
 # Test with a sample wine
-# curl -X POST http://localhost:5002/invocations \
-#   -H "Content-Type: application/json" \
-#   -d '{
-#     "dataframe_split": {
-#       "columns": [
-#         "fixed acidity", "volatile acidity", "citric acid", "residual sugar",
-#         "chlorides", "free sulfur dioxide", "total sulfur dioxide", "density",
-#         "pH", "sulphates", "alcohol"
-#       ],
-#       "data": [[7.0, 0.27, 0.36, 20.7, 0.045, 45, 170, 1.001, 3.0, 0.45, 8.8]]
-#     }
-#   }'
-
-# test with python
+curl -X POST http://localhost:5002/invocations \
+  -H "Content-Type: application/json" \
+  -d '{
+    "dataframe_split": {
+      "columns": [
+        "fixed acidity", "volatile acidity", "citric acid", "residual sugar",
+        "chlorides", "free sulfur dioxide", "total sulfur dioxide", "density",
+        "pH", "sulphates", "alcohol"
+      ],
+      "data": [[7.0, 0.27, 0.36, 20.7, 0.045, 45, 170, 1.001, 3.0, 0.45, 8.8]]
+    }
+  }'
 
 
+```
+
+
+You could also test with Python
+
+```
+
+import requests
+import json
 
 # Prepare test data
 test_wine = {
@@ -315,118 +380,60 @@ response = requests.post(
 )
 
 prediction = response.json()
-print(f"Predicted wine quality: {prediction['predictions'][0][0]:.2f}")
+print(f"Predicted wine quality: {prediction['predictions'][0]:.2f}")
 
-"""
-Step 8: Build a production container
-"""
+```
 
-# mlflow models build-docker \
-#     --model-uri "models:/wine-quality-predictor/1" \
-#     --name "wine-quality-api"
+## Step 8: Build a production Docker container
 
+```
+# Build Docker image
+mlflow models build-docker \
+  --model-uri "models:/wine-quality-predictor/1" \
+  --name "wine-quality-api"
+  ```
 
-# test your container
+  Test your container:
 
+  ```
 # Run the container
-# docker run -p 5003:8080 wine-quality-api
+docker run -p 5003:8080 wine-quality-api
 
 # Test in another terminal
-# curl -X POST http://localhost:5003/invocations \
-#   -H "Content-Type: application/json" \
-#   -d '{
-#     "dataframe_split": {
-#       "columns": ["fixed acidity","volatile acidity","citric acid","residual sugar","chlorides","free sulfur dioxide","total sulfur dioxide","density","pH","sulphates","alcohol"],
-#       "data": [[7.0, 0.27, 0.36, 20.7, 0.045, 45, 170, 1.001, 3.0, 0.45, 8.8]]
-#     }
-#   }'
-
-
-
-"""
-Step 9: Deploy to databricks
-"""
-
-# first register your model in Unity
-mlmodel_path = "/home/basil-owiti/DeepLearn/MLflow/mlruns/528582811782591847/models/m-ad25f82ca59a4085a44b35a648af4b0d/artifacts/MLmodel"
-model_id = "m-ad25f82ca59a4085a44b35a648af4b0d"
-model = mlflow.tensorflow.load_model(f"models:/{model_id}")
-ml_model = mlflow.pyfunc.load_model(mlmodel_path)
-
-# run on terminal: export MLFLOW_TRACKING_URI=http://localhost
-
-inputs = {
+curl -X POST http://localhost:5003/invocations \
+  -H "Content-Type: application/json" \
+  -d '{
     "dataframe_split": {
-        "columns": [
-            "fixed acidity",
-            "volatile acidity",
-            "citric acid",
-            "residual sugar",
-            "chlorides",
-            "free sulfur dioxide",
-            "total sulfur dioxide",
-            "density",
-            "pH",
-            "sulphates",
-            "alcohol",
-        ],
-        "data": [[7.0, 0.27, 0.36, 20.7, 0.045, 45, 170, 1.001, 3.0, 0.45, 8.8]],
+      "columns": ["fixed acidity","volatile acidity","citric acid","residual sugar","chlorides","free sulfur dioxide","total sulfur dioxide","density","pH","sulphates","alcohol"],
+      "data": [[7.0, 0.27, 0.36, 20.7, 0.045, 45, 170, 1.001, 3.0, 0.45, 8.8]]
     }
-}
+  }'
+  ```
 
-mlflow.set_registry_uri("databricks-uc")
+## Step 9: Deploy to Google cloud
 
-with mlflow.start_run():
-    # log model to Unity Catalog
-    mlflow.tensorflow.log_model(
-        model,
-        name="wine-quality-model",
-        registered_model_name="main.default.wine_quality_predictor",
-        signature = signature,
-        input_example = inputs
-    )
+1. Authentication and project set up
 
-from mlflow.deployments import get_deploy_client
+    $ `gcloud auth login`
+2.  Configure Docker for gcp
+    $ `gcloud auth configure-docker`
 
-# Create deployment client
-client = get_deploy_client("databricks")
+    set project
+    $ `gcloud config set project PROJECT_ID`
 
-# Create serving endpoint
-endpoint = client.create_endpoint(
-    config={
-        "name": "wine-quality-endpoint",
-        "config": {
-            "served_entities": [
-                {
-                    "entity_name": "main.default.wine_quality_predictor",
-                    "entity_version": "1",
-                    "workload_size": "Small",
-                    "scale_to_zero_enabled": True,
-                }
-            ]
-        },
-    }
-)
+3. IAM roles
 
-# Query the endpoint
-response = client.predict(
-    endpoint="wine-quality-endpoint",
-    inputs={
-        "dataframe_split": {
-            "columns": [
-                "fixed acidity",
-                "volatile acidity",
-                "citric acid",
-                "residual sugar",
-                "chlorides",
-                "free sulfur dioxide",
-                "total sulfur dioxide",
-                "density",
-                "pH",
-                "sulphates",
-                "alcohol",
-            ],
-            "data": [[7.0, 0.27, 0.36, 20.7, 0.045, 45, 170, 1.001, 3.0, 0.45, 8.8]],
-        }
-    },
-)
+    - Artifacr registry Administrator
+    - roles/artifactregistry.createOnPushRepoAdmin
+    - Storage Administrator
+4. Export the credentials
+    `export GOOGLE_APPLICATION_CREDENTIALS="/path/to/your-service-account-file.json"`
+5. Tag the docker image
+
+    $ `docker tag IMAGE_NAME gcr.io/PROJECT_ID/IMAGE_NAME:TAG`
+
+6. Push the docker image to Google Cloud Container Registry
+        $ `docker push gcr.io/PROJECT_ID/IMAGE_NAME:TAG`
+
+[see](https://www.youtube.com/watch?v=D1_FC6pGutQ&ab_channel=TechWithOtabek)
+

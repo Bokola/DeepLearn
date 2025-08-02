@@ -1,0 +1,21 @@
+Pushing docker image to Google Cloud platform container registry
+see: https://www.youtube.com/watch?v=D1_FC6pGutQ&ab_channel=TechWithOtabek
+
+1. Authentication and project set up
+$ gcloud auth login
+2. Configure Docker for gcp
+$ gcloud auth configure-docker
+set project
+$ gcloud config set project PROJECT_ID
+3. IAM roles
+
+    - Artifacr registry Administrator
+    - roles/artifactregistry.createOnPushRepoAdmin
+    - Storage Administrator
+4. Export the credentials
+export GOOGLE_APPLICATION_CREDENTIALS="/path/to/your-service-account-file.json"
+5. Tag the docker image
+$ docker tag IMAGE_NAME gcr.io/PROJECT_ID/IMAGE_NAME:TAG
+6. Push the docker image to Google Cloud Container Registry
+$ docker push gcr.io/PROJECT_ID/IMAGE_NAME:TAG
+
